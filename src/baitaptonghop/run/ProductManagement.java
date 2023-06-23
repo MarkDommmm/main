@@ -20,6 +20,7 @@ public class ProductManagement {
 
         int choice;
         while (true) {
+            show();
             System.out.println("1. thêm mới sản phẩm");
             System.out.println("2. sửa theo id sản phẩm");
             System.out.println("3. xóa sản phẩm");
@@ -30,10 +31,10 @@ public class ProductManagement {
                     addProduct();
                     break;
                 case 2:
-//                    updateProduct();
+                    updateProduct();
                     break;
                 case 3:
-//                    deleteProduct();
+                    deleteProduct();
                     break;
                 case 4:
                     break;
@@ -52,14 +53,36 @@ public class ProductManagement {
         if (check) {
             System.out.println("Lưu thành công");
         } else System.out.println("Lưu thất bại rồi");
+    }
 
+    static void updateProduct() {
+        System.out.println("Nhập id sản phẩm muốn sửa");
+        int id = Config.getInteger();
+        Product product = productService.findById(productList, id);
+        if (product == null) {
+            System.out.println("Không tìm thấy product ");
+        } else {
+            System.out.println("Nhập product muốn sửa");
+            String productUpdate = Config.getString();
+            product.setPrdName(productUpdate);
+            productService.save(productList, product);
+        }
+    }
+
+    static void deleteProduct() {
+        System.out.println("Nhập id sản phẩm muốn xóa");
+        int id = Config.getInteger();
+        boolean check = productService.deleteById(productList, id);
+        if (check) {
+            System.out.println("Xóa thành công");
+        } else System.out.println("Xóa thất bại rồi");
     }
 
     static void show() {
         Map<String, Integer> map = productService.atributeWithPrd(ccolorList, Data.product_data);
 
         Set<String> strings = map.keySet();
-        for (String str:strings) {
+        for (String str : strings) {
             System.out.println(str + ": " + map.get(str) + " sản phẩm");
         }
     }
